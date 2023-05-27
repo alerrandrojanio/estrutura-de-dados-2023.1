@@ -8,3 +8,4 @@ int size(Head *head);
 int find(Head *head, int n);
 int isEmpty(Head *head);
 void clear(Head *head);
+int showList(Head *head);
