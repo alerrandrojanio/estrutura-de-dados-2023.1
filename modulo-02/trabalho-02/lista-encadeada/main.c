@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include "lista-encadeada.h"
 
-int main() {
-    Head* list = create();
+int main()
+{
+    Head *list = create();
 
     printf("A lista esta vazia? %s\n", (isEmpty(list) == 1) ? "Verdadeiro\n\n" : "Falso\n\n");
 
@@ -21,7 +22,6 @@ int main() {
     find(list, 2);
 
     printf("A lista esta vazia? %s\n", (isEmpty(list) == 1) ? "Verdadeiro\n\n" : "Falso\n\n");
-
 
     return 0;
 }

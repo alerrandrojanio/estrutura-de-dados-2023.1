@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lista-encadeada.h"
+#include "lista-circular.h"
 
 struct head
 {
   Element *first;
+  Element *last;
   int size;
 };
 
@@ -12,6 +13,7 @@ struct element
 {
   int value;
   struct element *next;
+  struct element *previous;
 };
 
 // complexidade espacial O(1) || O(c)
@@ -20,6 +22,7 @@ Head *create()
 {
   Head *new = (Head *)malloc(sizeof(Head));
   new->first = NULL;
+  new->last = NULL;
   new->size = 0;
 
   return new;
@@ -32,30 +35,23 @@ int add(Head *head, int n)
   Element *new = (Element *)malloc(sizeof(Element));
   new->value = n;
   new->next = NULL;
-  Element *aux = head->first;
+  new->previous = NULL;
 
   if (head->size == 0)
   {
     head->first = new;
+    head->last = new;
     head->size++;
 
     return 1;
   }
 
-  if (head->size > 0)
-  {
-    while (aux->next != NULL)
-    {
-      aux = aux->next;
-    }
+  new->previous = head->last;
+  head->last->next = new;
+  head->last = new;
+  head->size++;
 
-    aux->next = new;
-    head->size++;
-
-    return 1;
-  }
-
-  return 0;
+  return 1;
 }
 
 // complexidade espacial O(c)
@@ -67,30 +63,35 @@ int removeElement(Head *head, int n)
     return 0;
   }
 
-  Element *current = head->first;
-  Element *previous = NULL;
+  Element *aux = head->first;
 
-  while (current->next != NULL)
+  while (aux != NULL)
   {
-    if (current->value == n)
+    if (aux->value == n)
     {
-      if (previous == NULL)
+      if (aux == head->first)
       {
-        head->first = current->next;
+        head->first = aux->next;
+        head->first->previous = NULL;
+      }
+      else if (aux == head->last)
+      {
+        head->last = aux->previous;
+        head->last->next = NULL;
       }
       else
       {
-        previous->next = current->next;
+        aux->previous->next = aux->next;
+        aux->next->previous = aux->previous;
       }
 
-      free(current);
+      free(aux);
       head->size--;
 
       return 1;
     }
 
-    previous = current;
-    current = current->next;
+    aux = aux->next;
   }
 
   return 0;
@@ -138,8 +139,8 @@ int isEmpty(Head *head)
   return head->size == 0;
 }
 
-// complexidade espacial O(c)
-// complexidade temporal O(n)
+// complexidade espacial O(n)
+// complexidade temporal O(c)
 void clear(Head *head)
 {
   Element *current = head->first;
@@ -174,6 +175,30 @@ int showList(Head *head)
   {
     printf("%d ", aux->value);
     aux = aux->next;
+  }
+  printf("\n\n");
+
+  return 1;
+}
+
+// complexidade espacial O(c)
+// complexidade temporal O(n)
+int showListUpsideDown(Head *head)
+{
+  if (isEmpty(head))
+  {
+    printf("Lista vazia!\n\n");
+
+    return 0;
+  }
+
+  Element *aux = head->last;
+
+  printf("Lista: ");
+  while (aux != NULL)
+  {
+    printf("%d ", aux->value);
+    aux = aux->previous;
   }
   printf("\n\n");
 
