@@ -8,6 +8,7 @@
     "*.css": "tailwindcss",
     "stdlib.h": "c",
     "stdio.h": "c",
-    "lista-encadeada.h": "c"
+    "lista-encadeada.h": "c",
+    "tree.h": "c"
   }
 }
