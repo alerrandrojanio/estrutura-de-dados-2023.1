@@ -9,6 +9,7 @@
     "stdlib.h": "c",
     "stdio.h": "c",
     "lista-encadeada.h": "c",
-    "tree.h": "c"
+    "tree.h": "c",
+    "product.h": "c"
   }
 }

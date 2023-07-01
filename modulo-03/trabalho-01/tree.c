@@ -4,99 +4,111 @@
 
 struct tree
 {
-  struct node *first;
-  int size;
-};
-
-struct node
-{
   int value;
-  struct node *left;
-  struct node *right;
+  struct tree *right;
+  struct tree *left;
 };
 
-Tree *create()
+Tree *create(int v)
 {
   Tree *tree = (Tree *)malloc(sizeof(Tree));
-  tree->first = NULL;
-  tree->size = 0;
-  printf("Instancia de arvore criada em %p!\n\n", tree);
+  tree->value = v;
+  tree->right = NULL;
+  tree->left = NULL;
 
   return tree;
 }
 
-int insert(Tree *tree, int value)
+void clear(Tree *tree)
 {
-  if (tree->size == 0)
+  if (tree != NULL)
   {
-    Node *node = (Node *)malloc(sizeof(Node));
-    node->value = value;
-    node->left = NULL;
-    node->right = NULL;
-    tree->first = node;
-    tree->size++;
-    return 1;
-  }
-  else
-  {
-    Node *node = tree->first;
-    while (node != NULL)
-    {
-      if (value < node->value)
-      {
-        if (node->left == NULL)
-        {
-          Node *newNode = (Node *)malloc(sizeof(Node));
-          newNode->value = value;
-          newNode->left = NULL;
-          newNode->right = NULL;
-          node->left = newNode;
-          tree->size++;
-          return 1;
-        }
-        else
-        {
-          node = node->left;
-        }
-      }
-      else if (value > node->value)
-      {
-        if (node->right == NULL)
-        {
-          Node *newNode = (Node *)malloc(sizeof(Node));
-          newNode->value = value;
-          newNode->left = NULL;
-          newNode->right = NULL;
-          node->right = newNode;
-          tree->size++;
-          return 1;
-        }
-        else
-        {
-          node = node->right;
-        }
-      }
-      else
-      {
-        return 0;
-      }
-    }
+    clear(tree->left);
+    clear(tree->right);
+    free(tree);
   }
 }
 
-void clear(Tree *tree)
+int insert(Tree *tree, int value)
 {
-  Node *node = tree->first;
-  while (node != NULL)
+  if (tree == NULL)
   {
-    Node *left = node->left;
-    Node *right = node->right;
-    free(node);
-    node = left;
-    if (node == NULL)
+    return 0;
+  }
+
+  if (value < tree->value)
+  {
+    if (tree->left == NULL)
     {
-      node = right;
+      tree->left = create(value);
+      return 1;
+    }
+    else
+    {
+      return insert(tree->left, value);
     }
   }
-  free(tree);
+  else if (value > tree->value)
+  {
+    if (tree->right == NULL)
+    {
+      tree->right = create(value);
+      return 1;
+    }
+    else
+    {
+      return insert(tree->right, value);
+    }
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+void printAllPre(Tree *tree)
+{
+  if (tree != NULL)
+  {
+    printf("%d ", tree->value);
+    printAllPre(tree->left);
+    printAllPre(tree->right);
+  }
+}
+
+void printAllPos(Tree *tree)
+{
+  if (tree != NULL)
+  {
+    printAllPos(tree->left);
+    printAllPos(tree->right);
+    printf("%d ", tree->value);
+  }
+}
+
+void printAllIn(Tree *tree)
+{
+  if (tree != NULL)
+  {
+    printAllIn(tree->left);
+    printf("%d ", tree->value);
+    printAllIn(tree->right);
+  }
+}
+
+Tree *search(Tree *tree, int value)
+{
+  if (tree == NULL || tree->value == value)
+  {
+    return tree;
+  }
+
+  if (value < tree->value)
+  {
+    return search(tree->left, value);
+  }
+  else
+  {
+    return search(tree->right, value);
+  }
 }
