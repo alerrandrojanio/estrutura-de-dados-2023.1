@@ -16,7 +16,7 @@ struct productsArray
   int n;
 };
 
-Product *create(int id, float value, char *name)
+Product *createProduct(int id, float value, char *name)
 {
   Product *product = (Product *)malloc(sizeof(Product));
   product->id = id;
@@ -52,37 +52,17 @@ void add(ProductsArray *array, Product *product)
 ProductsArray *populateArray()
 {
   ProductsArray *array = createArray(10);
-  Product *p;
 
-  p = create(1, 120.0, "Arroz");
-  add(array, p);
-
-  p = create(2, 20.0, "Feijao");
-  add(array, p);
-
-  p = create(3, 70.0, "Macarrao");
-  add(array, p);
-
-  p = create(4, 100.0, "Carne");
-  add(array, p);
-
-  p = create(5, 70.0, "Frango");
-  add(array, p);
-
-  p = create(6, 60.0, "Peixe");
-  add(array, p);
-
-  p = create(7, 50.0, "Ovo");
-  add(array, p);
-
-  p = create(8, 30.0, "Leite");
-  add(array, p);
-
-  p = create(9, 85.0, "Cafe");
-  add(array, p);
-
-  p = create(10, 20.0, "Acucar");
-  add(array, p);
+  add(array, createProduct(1, 120.0, "Arroz"));
+  add(array, createProduct(2, 20.0, "Feijao"));
+  add(array, createProduct(3, 70.0, "Macarrao"));
+  add(array, createProduct(4, 100.0, "Carne"));
+  add(array, createProduct(5, 70.0, "Frango"));
+  add(array, createProduct(6, 60.0, "Peixe"));
+  add(array, createProduct(7, 50.0, "Ovo"));
+  add(array, createProduct(8, 30.0, "Leite"));
+  add(array, createProduct(9, 85.0, "Cafe"));
+  add(array, createProduct(10, 20.0, "Acucar"));
 
   return array;
 }
@@ -105,20 +85,20 @@ void printArray(ProductsArray *array)
 ProductsArray *insertionSort(ProductsArray *array)
 {
   int i, j;
-  Product key;
+  Product aux;
 
   for (i = 1; i < array->n; i++)
   {
-    key = array->product[i];
+    aux = array->product[i];
     j = i - 1;
 
-    while (j >= 0 && array->product[j].value > key.value)
+    while (j >= 0 && array->product[j].value > aux.value)
     {
       array->product[j + 1] = array->product[j];
       j = j - 1;
     }
 
-    array->product[j + 1] = key;
+    array->product[j + 1] = aux;
   }
 
   return array;
@@ -172,31 +152,3 @@ ProductsArray *bubbleSort(ProductsArray *array)
 
   return array;
 }
-
-// ProductsArray *mergeSort(ProductsArray *array, int left, int right)
-// {
-//   if (left < right)
-//   {
-//     int middle = left + (right - left) / 2;
-
-//     mergeSort(array, left, middle);
-//     mergeSort(array, middle + 1, right);
-
-//     merge(array, left, middle, right);
-//   }
-
-//   return array;
-// }
-
-// ProductsArray *quickSort(ProductsArray *array, int left, int right)
-// {
-//   if (left < right)
-//   {
-//     int pivot = partition(array, left, right);
-
-//     quickSort(array, left, pivot - 1);
-//     quickSort(array, pivot + 1, right);
-//   }
-
-//   return array;
-// }
